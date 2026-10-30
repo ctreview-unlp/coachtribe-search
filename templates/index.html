@@ -316,6 +316,11 @@
         const data = await res.json();
         loading.classList.remove('active');
 
+        // Too many searches (429) or search unavailable (503): show the server's message.
+        empty.textContent = res.ok
+          ? 'Geen resultaten gevonden. Probeer een andere zoekopdracht.'
+          : (typeof data.detail === 'string' ? data.detail : 'Er ging iets mis. Probeer het opnieuw.');
+
         if (!data.results || data.results.length === 0) {
           empty.classList.add('active');
           return;
